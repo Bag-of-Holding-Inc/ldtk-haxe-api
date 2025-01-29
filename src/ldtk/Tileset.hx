@@ -94,7 +94,7 @@ class Tileset {
 	var _cachedAtlasTile : Null<h2d.Tile>;
 
 	/** Get the main tileset h2d.Tile **/
-	public inline function getAtlasTile() : Null<h2d.Tile> {
+	@:keep public inline function getAtlasTile() : Null<h2d.Tile> {
 		if( _cachedAtlasTile!=null )
 			return _cachedAtlasTile;
 		else {
