@@ -48,7 +48,7 @@ class Layer_Tiles extends ldtk.Layer {
 		/**
 			Render layer to a `h2d.TileGroup`. If `target` isn't provided, a new h2d.TileGroup is created. If `target` is provided, it **must** have the same tile source as the layer tileset!
 		**/
-		public inline function render(?target:h2d.TileGroup) : h2d.TileGroup {
+		@:keep public inline function render(?target:h2d.TileGroup) : h2d.TileGroup {
 			if( target==null )
 				target = new h2d.TileGroup( untypedTileset.getAtlasTile() );
 
