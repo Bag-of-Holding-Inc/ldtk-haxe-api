@@ -90,4 +90,8 @@ class Layer {
 	}
 
 	inline function getCoordId(cx,cy) return cx+cy*cWid;
+
+	public function getInt(cx:Int, cy:Int):Int {
+		return json.intGridCsv[getCoordId(cx,cy)];
+	}
 }

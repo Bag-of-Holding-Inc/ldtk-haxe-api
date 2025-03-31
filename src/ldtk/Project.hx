@@ -17,6 +17,7 @@ package ldtk;
 **/
 
 
+import js.html.Console;
 #if macro
 
 
@@ -60,21 +61,21 @@ class Project {
 	/** Project background color (as Hex "#rrggbb") **/
 	public var bgColor_hex: String;
 
-	var _untypedWorlds : Array<ldtk.World>;
+	public var untypedWorlds : Array<ldtk.World>;
 
 	/** Full access to the JSON project definitions **/
 	public var defs : ldtk.Json.DefinitionsJson;
 
 	/** A map containing all untyped Tilesets, indexed using their JSON  `uid` (integer unique ID). The typed tilesets will be added in a field called `all_tilesets` by macros. **/
 	@:allow(ldtk.Layer_Tiles, ldtk.Layer_AutoLayer, ldtk.Layer_IntGrid_AutoLayer, ldtk.Entity)
-	var _untypedTilesets : Map<Int, ldtk.Tileset>;
+	public var untypedTilesets : Map<Int, ldtk.Tileset>;
 
 	/** Internal asset cache to avoid reloading of previously loaded data. **/
 	var assetCache : Map<String, haxe.io.Bytes>; // TODO support hot reloading
 
 	var _untypedToc : Map<String, Array<ldtk.Json.TocInstanceData>>;
 
-	function new() {}
+	public function new() {}
 
 	/**
 		Replace current project using another project-JSON data.
@@ -83,7 +84,7 @@ class Project {
 	**/
 	public function parseJson(jsonString:String) {
 		// Init
-		_untypedTilesets = new Map();
+		untypedTilesets = new Map();
 		_untypedToc = new Map();
 		assetCache = new Map();
 
@@ -101,16 +102,16 @@ class Project {
 			json.worlds = [ World.createDummyJson(json) ];
 
 		// Populate worlds
-		_untypedWorlds = [];
+		untypedWorlds = [];
 		var idx = 0;
 		for(json in json.worlds)
-			_untypedWorlds.push( _instanciateWorld(this, idx++, json) );
+			untypedWorlds.push( _instanciateWorld(this, idx++, json) );
 
 
 		// Populate tilesets
 		Reflect.setField(this, "all_tilesets", {});
 		for(tsJson in json.defs.tilesets) {
-			_untypedTilesets.set( tsJson.uid, _instanciateTileset(this, tsJson) );
+			untypedTilesets.set( tsJson.uid, _instanciateTileset(this, tsJson) );
 			Reflect.setField( Reflect.field(this,"all_tilesets"), tsJson.identifier, _instanciateTileset(this, tsJson));
 		}
 
@@ -216,10 +217,10 @@ class Project {
 					}
 					#if heaps
 					function _heapsTileGetter(tileRect:TilesetRect) {
-						if( tileRect==null || !dn.M.isValidNumber(tileRect.x) || !_untypedTilesets.exists(tileRect.tilesetUid))
+						if( tileRect==null || !dn.M.isValidNumber(tileRect.x) || !untypedTilesets.exists(tileRect.tilesetUid))
 							return null;
 
-						var tileset = _untypedTilesets.get(tileRect.tilesetUid);
+						var tileset = untypedTilesets.get(tileRect.tilesetUid);
 						var tile = tileset.getFreeTile( tileRect.x, tileRect.y, tileRect.w, tileRect.h );
 						return tile;
 					}
@@ -248,7 +249,7 @@ class Project {
 
 
 	@:keep public function toString() {
-		return 'ldtk.Project[${_untypedWorlds.length} worlds]';
+		return 'ldtk.Project[${untypedWorlds.length} worlds]';
 	}
 
 
@@ -390,12 +391,12 @@ class Project {
 
 
 	function _instanciateWorld(project:ldtk.Project, arrayIndex:Int, json:ldtk.Json.WorldJson) {
-		return null; // overriden by Macros.hx
+		return new World(project, arrayIndex, json);
 	}
 
 
 	function _instanciateTileset(project:ldtk.Project, json:ldtk.Json.TilesetDefJson) {
-		return null;
+		return new Tileset(project, json);
 	}
 
 
@@ -494,7 +495,7 @@ class Project {
 		if( tileInfos==null )
 			return null;
 
-		var tileset = _untypedTilesets.get(tileInfos.tilesetUid);
+		var tileset = untypedTilesets.get(tileInfos.tilesetUid);
 		if( tileset==null )
 			return null;
 

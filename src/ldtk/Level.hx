@@ -150,7 +150,12 @@ class Level {
 
 
 	function _instanciateLayer(json:ldtk.Json.LayerInstanceJson) : ldtk.Layer {
-		return null; // overriden by Macros.hx
+		if (json.__type == "Tiles") {
+			return new ldtk.Layer_Tiles(this.untypedProject, json);
+		} else {
+			return new ldtk.Layer(this.untypedProject, json);
+		}
+		
 	}
 
 

@@ -5,7 +5,7 @@ class Layer_Tiles extends ldtk.Layer {
 
 	/** Getter to layer untyped Tileset instance. The typed value is created in macro. **/
 	var untypedTileset(get,never) : ldtk.Tileset;
-		inline function get_untypedTileset() return untypedProject._untypedTilesets.get(tilesetUid);
+		inline function get_untypedTileset() return untypedProject.untypedTilesets.get(tilesetUid);
 
 	/** Tileset UID **/
 	public var tilesetUid(default,null) : Int;
