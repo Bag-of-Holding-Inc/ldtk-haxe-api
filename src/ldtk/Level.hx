@@ -152,7 +152,10 @@ class Level {
 	function _instanciateLayer(json:ldtk.Json.LayerInstanceJson) : ldtk.Layer {
 		if (json.__type == "Tiles") {
 			return new ldtk.Layer_Tiles(this.untypedProject, json);
-		} else {
+		} else if(json.__type == "AutoLayer") {
+			return new ldtk.Layer_AutoLayer(this.untypedProject, json);
+		}
+		else {
 			return new ldtk.Layer(this.untypedProject, json);
 		}
 		
