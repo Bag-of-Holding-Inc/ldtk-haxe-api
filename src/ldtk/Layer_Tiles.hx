@@ -41,6 +41,10 @@ class Layer_Tiles extends ldtk.Layer {
 		return tiles.exists( getCoordId(cx,cy) );
 	}
 
+	public function clearTilesAt(cx, cy) {
+		tiles.remove( getCoordId(cx,cy) );
+	}
+
 
 	#if !macro
 

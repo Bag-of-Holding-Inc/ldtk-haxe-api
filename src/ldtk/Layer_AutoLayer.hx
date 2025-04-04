@@ -58,6 +58,18 @@ class Layer_AutoLayer extends ldtk.Layer {
 			});
 	}
 
+	public function clearTilesAt(cx, cy) {
+		var newTiles:Array<AutoTile> = [];
+		for( autoTile in autoTiles ) {
+			if( Math.round(autoTile.renderX / Const.GRID) == cx && Math.round(autoTile.renderY / Const.GRID) == cy ) {
+
+			} else {
+				newTiles.push(autoTile);
+			}
+		}
+		autoTiles = newTiles;
+	}
+
 
 
 	#if !macro
