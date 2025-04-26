@@ -1,7 +1,5 @@
 package ldtk;
 
-import js.html.Console;
-
 class Tileset {
 	var untypedProject: ldtk.Project;
 

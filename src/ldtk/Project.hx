@@ -16,8 +16,6 @@ package ldtk;
 	See full documentation here: https://ldtk.io/docs
 **/
 
-
-import js.html.Console;
 #if macro
 
 
